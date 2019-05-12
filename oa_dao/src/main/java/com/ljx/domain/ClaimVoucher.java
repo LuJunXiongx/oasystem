@@ -5,13 +5,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 //报销单
 public class ClaimVoucher {
-    private Integer id;
+    private Integer id;//编号
 
-    private String cause;
+    private String cause;//事由
 
-    private String createSn;
+    private String createSn;//创建者编号
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-    private Date createTime;
+    private Date createTime;//创建时间
 
     private String nextDealSn;
 
@@ -75,8 +75,8 @@ public class ClaimVoucher {
         this.status = status;
     }
 
-    private Employee creater;
-    private Employee dealer;
+    private Employee creater;//创建者
+    private Employee dealer;//处理人
 
     public Employee getCreater() {
         return creater;
