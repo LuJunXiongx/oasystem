@@ -25,11 +25,12 @@ public class ClaimVoucherController {
     //添加
     @RequestMapping("/add")
     public String add(HttpSession session, ClaimVoucherInfo info){
+        //获取当前登录用户
         Employee employee = (Employee) session.getAttribute("employee");
         //设置报销单创建者的编号设置为当前登录用户的工号
         info.getClaimVoucher().setCreateSn(employee.getSn());
         claimVoucherService.save(info.getClaimVoucher(),info.getItems());
-        return "redirect:detail?id="+info.getClaimVoucher().getId();
+        return "redirect:deal";
     }
     //保存完后跳到详情页面
     @RequestMapping("/detail")
@@ -40,4 +41,44 @@ public class ClaimVoucherController {
         return "claim_voucher_detail";
 
     }
+    //获取个人报销单
+    @RequestMapping("/self")
+    public String self(HttpSession session,Map<String,Object> map){
+        //获取当前登录用户
+        Employee employee = (Employee) session.getAttribute("employee");
+        map.put("list",claimVoucherService.getForSelf(employee.getSn()));
+        return "claim_voucher_self";
+
+    }
+    //获取待处理报销单
+    @RequestMapping("/deal")
+    public String deal(HttpSession session,Map<String,Object> map){
+        //获取当前登录用户
+        Employee employee = (Employee) session.getAttribute("employee");
+        map.put("list",claimVoucherService.getForDeal(employee.getSn()));
+        return "claim_voucher_deal";
+    }
+    //修改报销单
+    //去更新
+    @RequestMapping("/to_update")
+    public String toUpdate(int id,Map<String,Object> map){
+        map.put("items", Contant.getItems());
+        ClaimVoucherInfo info =new ClaimVoucherInfo();
+        info.setClaimVoucher(claimVoucherService.get(id));
+        info.setItems(claimVoucherService.getItems(id));
+        map.put("info",info);
+        return "claim_voucher_update";
+    }
+    //更新报销单
+    @RequestMapping("/update")
+    public String update(HttpSession session, ClaimVoucherInfo info){
+        //获取当前登录用户
+        Employee employee = (Employee)session.getAttribute("employee");
+        //设置报销单创建者的编号设置为当前登录用户的工号
+        info.getClaimVoucher().setCreateSn(employee.getSn());
+        claimVoucherService.update(info.getClaimVoucher(),info.getItems());
+        //重定向到待处理报销单
+        return "redirect:deal";
+    }
+
 }

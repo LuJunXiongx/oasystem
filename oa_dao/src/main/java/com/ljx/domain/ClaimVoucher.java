@@ -13,11 +13,11 @@ public class ClaimVoucher {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date createTime;//创建时间
 
-    private String nextDealSn;
+    private String nextDealSn;//处理人编号
 
-    private Double totalAmount;
+    private Double totalAmount;//总金额
 
-    private String status;
+    private String status;//状态
 
     public Integer getId() {
         return id;
