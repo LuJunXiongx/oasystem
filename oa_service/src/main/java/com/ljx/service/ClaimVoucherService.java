@@ -21,5 +21,9 @@ public interface ClaimVoucherService {
     List<ClaimVoucher> getForDeal(String sn);
     //修改报销单
     void update(ClaimVoucher claimVoucher, List<ClaimVoucherItem> items);
+    //提交报销单
+    void submit(int id);
+    //处理报销单
+    void deal(DealRecord dealRecord);
 
 }

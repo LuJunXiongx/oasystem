@@ -18,5 +18,6 @@ public interface EmployeeDao {
     Employee select(String sn);
     //查询所有
     List<Employee> selectAll();
+    //根据部门编号或职位获取待处理人
     List<Employee> selectByDepartmentAndPost(@Param("dsn") String dsn,@Param("post") String post);
 }

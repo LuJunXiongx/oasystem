@@ -1,5 +1,6 @@
 package com.ljx.controller;
 
+import com.ljx.domain.DealRecord;
 import com.ljx.domain.Employee;
 import com.ljx.dto.ClaimVoucherInfo;
 import com.ljx.global.Contant;
@@ -80,5 +81,35 @@ public class ClaimVoucherController {
         //重定向到待处理报销单
         return "redirect:deal";
     }
+
+    //提交报销单
+    @RequestMapping("/submit")
+    public String submit(int id){
+        claimVoucherService.submit(id);
+        return "redirect:deal";
+    }
+    //去处理报销单
+    @RequestMapping("/to_check")
+    public String toCheck(int id,Map<String,Object> map){
+        map.put("claimVoucher",claimVoucherService.get(id));
+        map.put("items",claimVoucherService.getItems(id));
+        map.put("records",claimVoucherService.getRecords(id));
+        DealRecord dealRecord =new DealRecord();
+        dealRecord.setClaimVoucherId(id);
+        map.put("record",dealRecord);
+        return "claim_voucher_check";
+    }
+    //更新报销单
+    @RequestMapping("/check")
+    public String check(HttpSession session, DealRecord dealRecord){
+        //获取当前登录用户
+        Employee employee = (Employee)session.getAttribute("employee");
+        //设置当前处理人
+        dealRecord.setDealSn(employee.getSn());
+        claimVoucherService.deal(dealRecord);
+        //重定向到待处理报销单
+        return "redirect:deal";
+    }
+
 
 }
